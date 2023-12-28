@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{5B83EFB3-2202-44DA-B916-4738776E558F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "auth", "server\auth\auth.csproj", "{CE0BCEA0-6C5B-4AFB-B45A-6B8787031C13}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "model", "server\model\model.csproj", "{E9EDEA20-36C7-4569-BD97-A3B38E9FC55E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE0BCEA0-6C5B-4AFB-B45A-6B8787031C13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE0BCEA0-6C5B-4AFB-B45A-6B8787031C13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE0BCEA0-6C5B-4AFB-B45A-6B8787031C13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE0BCEA0-6C5B-4AFB-B45A-6B8787031C13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9EDEA20-36C7-4569-BD97-A3B38E9FC55E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9EDEA20-36C7-4569-BD97-A3B38E9FC55E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9EDEA20-36C7-4569-BD97-A3B38E9FC55E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9EDEA20-36C7-4569-BD97-A3B38E9FC55E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CE0BCEA0-6C5B-4AFB-B45A-6B8787031C13} = {5B83EFB3-2202-44DA-B916-4738776E558F}
+		{E9EDEA20-36C7-4569-BD97-A3B38E9FC55E} = {5B83EFB3-2202-44DA-B916-4738776E558F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AEE1ED2A-3A26-45F0-90F5-F4E608A194D7}
+	EndGlobalSection
+EndGlobal
