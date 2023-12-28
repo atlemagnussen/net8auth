@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace server.Pages;
+namespace net8auth.auth.Pages;
 
 public class IndexModel : PageModel
 {

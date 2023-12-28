@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-server-0a815568-352b-45f5-b9aa-2b210abfa92a</UserSecretsId>
+    <RootNameSpace>net8auth.auth</RootNameSpace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +18,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\model\model.csproj" />
   </ItemGroup>
 
 </Project>
