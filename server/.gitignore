@@ -213,4 +213,4 @@ FakesAssemblies/
 
 local.settings.notifications.json
 
-app.db
+app.db*
