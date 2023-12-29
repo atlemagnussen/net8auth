@@ -16,6 +16,8 @@ dotnet tool update --global dotnet-ef
 then
 
 ```sh
+dotnet ef migrations add UpdatedUser
+
 dotnet ef database update
 ```
 

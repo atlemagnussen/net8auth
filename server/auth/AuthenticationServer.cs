@@ -15,17 +15,21 @@ namespace net8auth.auth
                 options.UseSqlite(connectionString));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            // services.AddDefaultIdentity<AuthUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            // services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
             //     .AddEntityFrameworkStores<AuthDbContext>();
                         
-            services.AddAuthentication(IdentityConstants.ApplicationScheme)
-                .AddIdentityCookies();
+            // services.AddAuthentication(IdentityConstants.ApplicationScheme)
+            //     .AddIdentityCookies();
             
             services.AddAuthorizationBuilder();
 
-            services.AddIdentityCore<AuthUser>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<AuthDbContext>()
-                .AddApiEndpoints();
+                .AddRoleManager<RoleManager<ApplicationRole>>();
+                
+            // services.AddIdentityCore<ApplicationUser>()
+            //     .AddEntityFrameworkStores<AuthDbContext>()
+            //     .AddApiEndpoints();
 
             services.Configure<IdentityOptions>(options =>
             {

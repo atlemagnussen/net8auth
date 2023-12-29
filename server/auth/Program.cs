@@ -42,7 +42,7 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.MapIdentityApi<AuthUser>();
+        // app.MapIdentityApi<ApplicationUser>();
 
         app.MapRazorPages();
 
