@@ -1,19 +1,18 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using net8auth.auth.Models;
 using net8auth.model;
 
 namespace net8auth.auth.Pages
 {
-    public class LoginModel : PageModel
+    public class RegisterModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(UserManager<ApplicationUser> userManager,
+        public RegisterModel(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<LoginModel> logger)
         {
@@ -23,13 +22,11 @@ namespace net8auth.auth.Pages
         }
 
         [BindProperty]
-        public LoginInputModel Model { get; set; } = new LoginInputModel();
+        public RegisterInputModel Model { get; set; } = new RegisterInputModel();
 
         public IActionResult OnGetAsync(string returnUrl)
         {
-            Model = new LoginInputModel {
-                ReturnUrl = returnUrl
-            };
+            Model = new RegisterInputModel();
 
             return Page();
         }
@@ -39,17 +36,14 @@ namespace net8auth.auth.Pages
             _logger.LogInformation("OnPostAsync");
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(Model.Username, Model.Password, Model.RememberLogin, lockoutOnFailure: true);
-                _logger.LogInformation("Result success={Succeeded}", result.Succeeded);
-                if (result.Succeeded)
-                {
-                    var user = await _userManager.FindByNameAsync(Model.Username);
-                    if (user != null)
-                        _logger.LogInformation($"user: {user.UserName}");
-                    return Redirect("~/");
+                var user = new ApplicationUser {
+                    UserName = Model.Username
+                };
+                var result = await _userManager.CreateAsync(user, Model.Password);
+                if (!result.Succeeded) {
+                    foreach (var error in result.Errors)
+                        _logger.LogError(error.Description);
                 }
-
-                ModelState.AddModelError(string.Empty, "Error");
             }
 
             else
