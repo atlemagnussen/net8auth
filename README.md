@@ -18,3 +18,15 @@ then
 ```sh
 dotnet ef database update
 ```
+
+## templates used
+
+Auth
+```sh
+dotnet new webapp --auth Individual --use-program-main
+````
+
+Api
+```sh
+dotnet new webapi --use-program-main --use-controllers
+```

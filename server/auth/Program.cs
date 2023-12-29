@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using net8auth.auth.Data;
+using net8auth.model;
 
 namespace net8auth.auth;
 
@@ -14,12 +15,17 @@ public class Program
         builder.Services.AddAuthenticationServer(builder.Configuration);
         builder.Services.AddRazorPages();
 
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            app.UseMigrationsEndPoint();
+            // app.UseMigrationsEndPoint();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
         else
         {
@@ -35,6 +41,8 @@ public class Program
 
         app.UseAuthentication();
         app.UseAuthorization();
+
+        app.MapIdentityApi<AuthUser>();
 
         app.MapRazorPages();
 
