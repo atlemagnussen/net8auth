@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using net8auth.auth.Models;
+using net8auth.auth.Services;
 
 namespace net8auth.api.Controllers;
 
@@ -7,17 +8,22 @@ namespace net8auth.api.Controllers;
 [Route(".well-known")]
 public class WellKnownController : ControllerBase
 {
+    private readonly WellKnownService _service;
+
+    public WellKnownController(WellKnownService service)
+    {
+        _service = service;
+    }
+
     [HttpGet]
     public IActionResult Index() {
         return Ok("hello");
     }
 
     [HttpGet("openid-configuration")]
-    public WellknownModel OpenIdConfiguration()
+    public DiscoveryDocumentModel OpenIdConfiguration()
     {
-        return new WellknownModel
-        {
-            Issuer = "this"
-        };
+        var disco = _service.Get(Request);
+        return disco;
     }
 }

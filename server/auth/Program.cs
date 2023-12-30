@@ -11,7 +11,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
+        builder.Services.AddServices();
         builder.Services.AddAuthenticationServer(builder.Configuration);
         builder.Services.AddControllers();
         builder.Services.AddRazorPages();

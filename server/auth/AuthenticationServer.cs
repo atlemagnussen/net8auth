@@ -1,12 +1,18 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using net8auth.auth.Data;
+using net8auth.auth.Services;
 using net8auth.model;
 
 namespace net8auth.auth
 {
     public static class AuthenticationServer
     {
+        public static void AddServices(this IServiceCollection services)
+        {
+            services.AddTransient<WellKnownService>();
+        }
+        
         public static void AddAuthenticationServer(this IServiceCollection services, ConfigurationManager configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");

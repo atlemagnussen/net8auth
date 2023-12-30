@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace net8auth.auth.Models;
 
-public record WellknownModel
+public record DiscoveryDocumentModel
 {
     [JsonPropertyName("issuer")]
     public string Issuer { get; init; } = string.Empty;
