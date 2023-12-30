@@ -1,0 +1,12 @@
+:root {
+    --default-width: 1024px;
+    --mobile-width: 640px;
+
+    --background: #DDD;
+    --secondary-background: #AAA;
+
+    --primary: #0077cc;
+    --button-primary: #1b6ec2;
+
+    --button-primary-border: #1861ac;
+}

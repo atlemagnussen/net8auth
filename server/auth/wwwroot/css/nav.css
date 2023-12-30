@@ -1,0 +1,30 @@
+nav {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+ul.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+a.primary {
+    color: var(--primary);
+}
+  
+.btn-primary {
+    color: #fff;
+    background-color: var(--button-primary);
+    border-color: var(--button-primary-border);
+}
+  
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: var(--button-primary);
+    border-color: var(--button-primary-border);
+}
