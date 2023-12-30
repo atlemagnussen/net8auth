@@ -1,3 +1,13 @@
+:root {
+    --button-primary: #1b6ec2;
+    --button-primary-border: #1861ac;
+
+    --button-color: var(--text);
+    --button-outline-color: var(--input-border);
+    --button-border-color: var(--input-border);
+    --button-background: var(--secondary-background);
+    --button-background-hover: var(--background);
+}
 
 button {
     cursor: pointer;
@@ -11,6 +21,14 @@ button {
     padding: 0.5em 1em;
     transition: background .1s linear;
 }
+button.primary {
+    --button-color: var(--secondary-text);
+    --button-outline-color: var(--button-primary-border);
+    --button-border-color: var(--button-primary-border);
+    --button-background: var(--button-primary);
+    --button-background-hover: var(--blue-sharp);
+}
+
 button:hover {
     background: var(--button-background-hover);
 }
@@ -20,4 +38,51 @@ button:disabled {
     outline-color: var(--primary-button);
     border-color: var(--primary-button);
     background: var(--disabled-background);	
+}
+
+input {
+    background-color: var(--input-background);
+    background-image: none;
+    border: none;
+    outline: 1px solid var(--input-border);
+    border-radius: 1px;
+    color: inherit;
+    display: block;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+}
+input:focus {
+    outline-color: var(--blue-sharp);
+}
+
+.form-group {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.form-group label {
+    flex: 6rem 0 0;
+}
+.form-group input {
+    flex: 16rem 0 1;
+}
+
+.container {
+    padding: 0.4rem;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 0.5rem;
+}
+.buttons * {
+    flex: 6rem 0 0;
+}
+
+article header {
+    background: var(--background);
 }

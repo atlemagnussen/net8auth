@@ -6,10 +6,10 @@
 
     <header>
         <h1>Login</h1>
-    <header>
+    </header>
     <form asp-route="Login">
         <input type="hidden" asp-for="Model.ReturnUrl" />
-        
+
         <div class="form-group">
             <label asp-for="Model.Username"></label>
             <input class="form-control" placeholder="Username" asp-for="Model.Username" autofocus>
@@ -20,9 +20,13 @@
             <input type="password" class="form-control" placeholder="Password" asp-for="Model.Password" autocomplete="off">
         </div>
 
-        <div class="mt-4 mb-4">
-            <button class="btn btn-primary" name="button" value="login">Login</button>
-            <button class="btn btn-light" name="button" value="cancel">Cancel</button>
+        <div class="buttons">
+            <div>
+                <button class="primary" name="button" value="login">Login</button>
+            </div>
+            <div>
+                <button name="button" value="cancel">Cancel</button>
+            </div>
         </div>
 
     </form>

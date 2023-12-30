@@ -7,6 +7,7 @@ body {
     background: var(--background);
     width: var(--default-width);
     max-width: var(--default-width);
+    height: 100vh;
     margin: auto;
     display: grid;
     grid-template-columns: 1fr;
@@ -25,6 +26,7 @@ header {
 }
 
 main {
+    background: var(--background);
     overflow-x: hidden;
     overflow-y: auto;
     grid-area: main;
@@ -39,7 +41,7 @@ footer {
     padding: 0.2rem;
 }
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 1024px) {
     html {
        font-size: 16px;
     }

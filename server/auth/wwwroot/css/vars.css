@@ -2,19 +2,15 @@
     --default-width: 1024px;
     --mobile-width: 640px;
 
-    --background: #DDD;
-    --secondary-background: #AAA;
+    --background: #EEE;
+    --secondary-background: #DDD;
 
     --primary: #0077cc;
+    --blue-sharp: #0099de;
 
     --text: #111;
+    --secondary-text: #FFF;
 
-    --button-primary: #1b6ec2;
-    --button-primary-border: #1861ac;
-
-    --button-color: var(--text);
-    --button-outline-color: var(--input-border);
-    --button-border-color: var(--input-border);
-    --button-background: var(--secondary-background);
-    --button-background-hover: var(--primary-background);
+    --input-background: #f9f9f9;
+    --input-border: #CCC;
 }
