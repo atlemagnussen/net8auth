@@ -1,0 +1,23 @@
+
+button {
+    cursor: pointer;
+    color: var(--button-color);
+    outline-color: var(--button-outline-color);
+    border: 1px solid var(--button-border-color);
+    background: var(--button-background);
+    box-sizing: border-box;
+    border-radius:3px;
+    border-width: 1px;
+    padding: 0.5em 1em;
+    transition: background .1s linear;
+}
+button:hover {
+    background: var(--button-background-hover);
+}
+button:disabled {
+    cursor: not-allowed;
+    color: var(--disabled-color);
+    outline-color: var(--primary-button);
+    border-color: var(--primary-button);
+    background: var(--disabled-background);	
+}

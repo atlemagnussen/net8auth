@@ -6,7 +6,15 @@
     --secondary-background: #AAA;
 
     --primary: #0077cc;
-    --button-primary: #1b6ec2;
 
+    --text: #111;
+
+    --button-primary: #1b6ec2;
     --button-primary-border: #1861ac;
+
+    --button-color: var(--text);
+    --button-outline-color: var(--input-border);
+    --button-border-color: var(--input-border);
+    --button-background: var(--secondary-background);
+    --button-background-hover: var(--primary-background);
 }

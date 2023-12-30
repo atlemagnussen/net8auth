@@ -2,28 +2,28 @@
 @using net8auth.auth.Pages
 @model LoginModel
 
-<div class="row">
-    <div class="col-md-4">
+<article>
 
-        <h1 class="mt-5 mb-3">Login</h1>
+    <header>
+        <h1>Login</h1>
+    <header>
+    <form asp-route="Login">
+        <input type="hidden" asp-for="Model.ReturnUrl" />
+        
+        <div class="form-group">
+            <label asp-for="Model.Username"></label>
+            <input class="form-control" placeholder="Username" asp-for="Model.Username" autofocus>
+        </div>
 
-        <form asp-route="Login">
-            <input type="hidden" asp-for="Model.ReturnUrl" />
-            <div class="form-group">
-                <label asp-for="Model.Username"></label>
-                <input class="form-control" placeholder="Username" asp-for="Model.Username" autofocus>
-            </div>
+        <div class="form-group">
+            <label asp-for="Model.Password"></label>
+            <input type="password" class="form-control" placeholder="Password" asp-for="Model.Password" autocomplete="off">
+        </div>
 
-            <div class="form-group">
-                <label asp-for="Model.Password"></label>
-                <input type="password" class="form-control" placeholder="Password" asp-for="Model.Password" autocomplete="off">
-            </div>
+        <div class="mt-4 mb-4">
+            <button class="btn btn-primary" name="button" value="login">Login</button>
+            <button class="btn btn-light" name="button" value="cancel">Cancel</button>
+        </div>
 
-            <div class="mt-4 mb-4">
-                <button class="btn btn-primary" name="button" value="login">Login</button>
-                <button class="btn btn-light" name="button" value="cancel">Cancel</button>
-            </div>
-
-        </form>
-    </div>
-</div>
+    </form>
+</article>
