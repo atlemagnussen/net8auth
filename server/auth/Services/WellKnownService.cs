@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using net8auth.auth.Models;
 
 namespace net8auth.auth.Services;
@@ -9,7 +10,11 @@ public class WellKnownService
         var thisBaseUrl = GetBaseUrlHost(request);
         var disco = new DiscoveryDocumentModel
         {
-            Issuer = thisBaseUrl
+            Issuer = thisBaseUrl,
+            JwksUri = $"{thisBaseUrl}/{OpenIdJwks}",
+            AuthorizationEndpoint = $"{thisBaseUrl}/{ConnectEndpoint.Base}/{ConnectEndpoint.Authorize}",
+            TokenEndpoint = $"{thisBaseUrl}/{ConnectEndpoint.Base}/{ConnectEndpoint.Token}",
+            UserinfoEndpoint = $"{thisBaseUrl}/{ConnectEndpoint.Base}/{ConnectEndpoint.UserInfo}",
         };
         return disco;
     }
@@ -19,4 +24,6 @@ public class WellKnownService
     {
         return $"{request.Scheme}://{request.Host.Value}";
     }
+
+    public static string OpenIdJwks = ".well-known/openid-configuration/jwks";
 }

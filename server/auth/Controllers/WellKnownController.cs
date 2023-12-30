@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using net8auth.auth.Models;
 using net8auth.auth.Services;
 
-namespace net8auth.api.Controllers;
+namespace net8auth.auth.Controllers;
 
 [ApiController]
 [Route(".well-known")]
