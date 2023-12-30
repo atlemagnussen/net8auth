@@ -16,6 +16,9 @@ ul.navbar {
 a.primary {
     color: var(--primary);
 }
+a.nav-link {
+    color: var(--text);
+}
   
 .btn-primary {
     color: #fff;

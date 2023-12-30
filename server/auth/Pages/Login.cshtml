@@ -21,13 +21,24 @@
         </div>
 
         <div class="buttons">
-            <div>
+            <div></div>
+            <div class="row-space-between">
                 <button class="primary" name="button" value="login">Login</button>
-            </div>
-            <div>
                 <button name="button" value="cancel">Cancel</button>
             </div>
         </div>
-
     </form>
+
+    <div class="error-messages">
+        @foreach (var field in ModelState)
+        {
+            if (field.Value.Errors.Count > 0)
+            {
+                foreach (var error in field.Value.Errors)
+                {
+                    <p>@error.ErrorMessage</p>
+                }
+            }
+        }
+    </div>
 </article>

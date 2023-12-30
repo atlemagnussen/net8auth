@@ -31,11 +31,13 @@ public class LoginModel : PageModel
             ReturnUrl = returnUrl
         };
 
+        ModelState.Clear();
         return Page();
     }
 
     public async Task<IActionResult> OnPostAsync(string button)
     {
+        _logger.LogInformation($"Button: {button}");
         _logger.LogInformation("OnPostAsync");
         if (ModelState.IsValid)
         {
@@ -46,10 +48,20 @@ public class LoginModel : PageModel
                 var user = await _userManager.FindByNameAsync(Model.Username);
                 if (user != null)
                     _logger.LogInformation($"user: {user.UserName}");
-                return Redirect("~/");
+                return Redirect(Model.ReturnUrl);
             }
 
-            ModelState.AddModelError(string.Empty, "Error");
+            if (result.IsLockedOut)
+                ModelState.AddModelError("Login", "Account has been locked out");
+
+            else if (result.IsNotAllowed)
+                ModelState.AddModelError(string.Empty, "Account is not allowed to sign in");
+            
+            else if (result.RequiresTwoFactor)
+                ModelState.AddModelError(string.Empty, "Account required two factor");
+            
+            else
+                ModelState.AddModelError(string.Empty, "Incorrect login attempt");
         }
 
         else

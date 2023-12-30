@@ -27,7 +27,7 @@ namespace net8auth.auth.Pages
         public IActionResult OnGetAsync(string returnUrl)
         {
             Model = new RegisterInputModel();
-
+            ModelState.Clear();
             return Page();
         }
 

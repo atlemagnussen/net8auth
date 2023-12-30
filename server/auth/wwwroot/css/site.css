@@ -1,9 +1,11 @@
 html {
     font-size: 16px;
     min-height: 100%;
+    font-family: monospace;
 }
 
 body {
+    font-family: monospace;
     background: var(--background);
     width: var(--default-width);
     max-width: var(--default-width);

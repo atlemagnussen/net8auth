@@ -10,6 +10,7 @@
 }
 
 button {
+    font-family: monospace;
     cursor: pointer;
     color: var(--button-color);
     outline-color: var(--button-outline-color);
@@ -41,6 +42,7 @@ button:disabled {
 }
 
 input {
+    font-family: monospace;
     background-color: var(--input-background);
     background-image: none;
     border: none;
@@ -49,6 +51,7 @@ input {
     color: inherit;
     display: block;
     padding: 6px 12px;
+    box-sizing: border-box;
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
 }
 input:focus {
@@ -66,7 +69,7 @@ input:focus {
     flex: 6rem 0 0;
 }
 .form-group input {
-    flex: 16rem 0 1;
+    flex: 18rem 0 1;
 }
 
 .container {
@@ -82,7 +85,16 @@ input:focus {
 .buttons * {
     flex: 6rem 0 0;
 }
-
+.row-space-between {
+    flex: 18rem 0 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 article header {
     background: var(--background);
+}
+
+.error-messages p {
+    color: red;
 }
