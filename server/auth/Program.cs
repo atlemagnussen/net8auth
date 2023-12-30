@@ -13,6 +13,7 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddAuthenticationServer(builder.Configuration);
+        builder.Services.AddControllers();
         builder.Services.AddRazorPages();
 
         builder.Services.AddEndpointsApiExplorer();
@@ -44,6 +45,7 @@ public class Program
 
         // app.MapIdentityApi<ApplicationUser>();
 
+        app.MapControllers();
         app.MapRazorPages();
 
         app.Run();
