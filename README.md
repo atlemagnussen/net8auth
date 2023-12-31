@@ -2,6 +2,8 @@
 
 https://devblogs.microsoft.com/dotnet/whats-new-with-identity-in-dotnet-8/
 
+https://learn.microsoft.com/en-us/dotnet/core/compatibility/aspnet-core/8.0/securitytoken-events
+
 
 ## Migrations
 
