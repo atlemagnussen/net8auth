@@ -1,0 +1,14 @@
+﻿@page
+@using net8auth.auth.Pages
+@model UsersModel
+@{
+    ViewData["Title"] = "Users";
+}
+<h1>@ViewData["Title"]</h1>
+
+@foreach(var user in Model.Users)
+{
+    <p>
+        UserName: @user.UserName, Email = @user.Email
+    </p>
+}

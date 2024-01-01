@@ -19,9 +19,12 @@ public class ConnectController : ControllerBase
             { "role", "Admin" }
         };
         
-        var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("hello_world_whathello_world_whathello_world_whathello_world_what"));
+        
+
+        SecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("hello_world_whathello_world_whathello_world_whathello_world_what"));
         var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
+        
         var handler = new JsonWebTokenHandler();
         var desc = new SecurityTokenDescriptor
         {
@@ -29,10 +32,10 @@ public class ConnectController : ControllerBase
             Issuer = "test",
             Claims = claims,
             Expires = DateTime.UtcNow.AddDays(-1),
-            SigningCredentials = cred
         };
 
-        var jwt = handler.CreateToken(desc);
-        return Ok(jwt);
+        var jwtUnsigned = handler.CreateToken(desc);
+        
+        return Ok(jwtUnsigned);
     }
 }

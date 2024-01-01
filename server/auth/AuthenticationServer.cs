@@ -11,6 +11,7 @@ namespace net8auth.auth
         public static void AddServices(this IServiceCollection services)
         {
             services.AddTransient<WellKnownService>();
+            services.AddTransient<UsersService>();
         }
         
         public static void AddAuthenticationServer(this IServiceCollection services, ConfigurationManager configuration)
