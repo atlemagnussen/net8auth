@@ -29,5 +29,5 @@
   <ItemGroup>
     <ProjectReference Include="..\model\model.csproj" />
   </ItemGroup>
-
+  
 </Project>

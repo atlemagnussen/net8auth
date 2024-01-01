@@ -1,4 +1,4 @@
-﻿namespace model;
+﻿namespace net8auth.model;
 
 public class Blog
 {

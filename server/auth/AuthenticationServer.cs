@@ -69,6 +69,7 @@ namespace net8auth.auth
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
+
         }
     }
 }
