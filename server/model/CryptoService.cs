@@ -77,9 +77,10 @@ public static class CryptoService
     public static SecurityKey GetSecurityKeyFromJwk(JsonWebKey jwk, bool isPrivate)
     {
         var parms = ConvertFromJwk(jwk, isPrivate);
-        var rsaProvider = new RSACryptoServiceProvider();
-        rsaProvider.ImportParameters(parms);
-        SecurityKey key = new RsaSecurityKey(rsaProvider);
+        var rsa = RSA.Create(parms);
+        
+        SecurityKey key = new RsaSecurityKey(rsa);
+        key.KeyId = jwk.Kid;
         return key;
     }
 
@@ -136,7 +137,7 @@ public static class CryptoService
         var privateJwk = JsonWebKeyConverter.ConvertFromSecurityKey(privateKey);
         privateJwk.Alg = SecurityAlgorithms.RsaSha256;
         privateJwk.Use = "sig";
-
+        
         RsaSecurityKey publicKey = new(rsa.ExportParameters(false))
         {
             KeyId = "key1"
