@@ -6,7 +6,14 @@ namespace net8auth.model;
 
 public static class CryptoService
 {
-    public static string? SignData(string message, CryptoKeyPair keyPair)
+    /// <summary>
+    /// Sign a JWT
+    /// </summary>
+    /// <param name="jwt">Must be header.payload</param>
+    /// <param name="keyPair">Must be private key</param>
+    /// <returns></returns>
+    /// <exception cref="ApplicationException"></exception>
+    public static string? SignJwk(string jwt, CryptoKeyPair keyPair)
     {
         // The array to store the signed message in bytes
         byte[] signedBytes;
@@ -18,7 +25,7 @@ public static class CryptoService
         
         // Write the message to a byte array using UTF8 as the encoding.
         var encoder = new UTF8Encoding();
-        byte[] originalData = encoder.GetBytes(message);
+        byte[] originalData = encoder.GetBytes(jwt);
 
         try
         {
@@ -44,7 +51,7 @@ public static class CryptoService
         }
         //}
         // Convert the a base64 string before returning
-        return Convert.ToBase64String(signedBytes);
+        return Base64UrlEncoder.Encode(signedBytes);
     }
 
     public static RSAParameters ConvertFromJwk(JsonWebKey jwk, bool isPrivate = false) {
@@ -98,7 +105,7 @@ public static class CryptoService
         {
             Console.WriteLine(e.Message);
 
-            return null;
+            throw;
         }
     }
 

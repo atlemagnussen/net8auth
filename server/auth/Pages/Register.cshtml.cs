@@ -27,6 +27,7 @@ namespace net8auth.auth.Pages
         public IActionResult OnGetAsync(string returnUrl)
         {
             Model = new RegisterInputModel();
+            ViewData["SuccessMsg"] = string.Empty;
             ModelState.Clear();
             return Page();
         }
@@ -37,13 +38,16 @@ namespace net8auth.auth.Pages
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser {
-                    UserName = Model.Username
+                    UserName = Model.Username,
+                    Email = Model.Username
                 };
                 var result = await _userManager.CreateAsync(user, Model.Password);
                 if (!result.Succeeded) {
                     foreach (var error in result.Errors)
-                        _logger.LogError(error.Description);
+                        ModelState.AddModelError(string.Empty, error.Description);
                 }
+                else
+                    ViewData["SuccessMsg"] = $"Successfully registered {Model.Username}";
             }
 
             else

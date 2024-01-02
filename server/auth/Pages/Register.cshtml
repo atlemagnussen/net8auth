@@ -26,8 +26,10 @@
             </div>
         </div>
     </form>
-
-    <div class="messages">
+    <div>
+        <p>@ViewData["SuccessMsg"]</p>
+    </div>
+    <div class="error-messages">
         @foreach (var field in ModelState)
         {
             if (field.Value.Errors.Count > 0)

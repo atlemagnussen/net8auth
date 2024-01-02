@@ -18,9 +18,9 @@ sectionKey.Bind(keyPair);
 var services = new ServiceCollection();
 services.AddOptions();
 
-var jwtUnsigned = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhdGxlbWFnbnVzc2VuQGdtYWlsLmNvbSIsIm5hbWUiOiJhdGxlIiwicm9sZSI6IkFkbWluIiwiaXNzIjoidGVzdCIsImV4cCI6MTcwNDA2MDg0MCwiaWF0IjoxNzA0MTQ3MjQwLCJuYmYiOjE3MDQxNDcyNDB9";
+var jwtUnsigned = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhdGxlbWFnbnVzc2VuQGdtYWlsLmNvbSIsIm5hbWUiOiJhdGxlIiwicm9sZSI6IkFkbWluIiwiaXNzIjoidGVzdCIsImV4cCI6MTcwNDA5ODM5NywiaWF0IjoxNzA0MTg0Nzk3LCJuYmYiOjE3MDQxODQ3OTd9";
 
-var signature = CryptoService.SignData(jwtUnsigned, keyPair);
+var signature = CryptoService.SignJwk(jwtUnsigned, keyPair);
 
 Console.WriteLine($"{jwtUnsigned}.{signature}");
 
