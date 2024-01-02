@@ -12,6 +12,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddServices();
+        builder.Services.AddOptionsConfiguration(builder.Configuration);
         builder.Services.AddAuthenticationServer(builder.Configuration);
         builder.Services.AddControllers();
         builder.Services.AddRazorPages();

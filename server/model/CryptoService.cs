@@ -17,7 +17,7 @@ public static class CryptoService
     {
         // The array to store the signed message in bytes
         byte[] signedBytes;
-        using var rsa = new RSACryptoServiceProvider();
+        
         
         // hash = hasher.ComputeHash(Encoding.UTF8.GetBytes(plaintext));
         if (keyPair.PrivateKey == null) 
@@ -30,25 +30,19 @@ public static class CryptoService
         try
         {
             var parms = ConvertFromJwk(keyPair.PrivateKey);
-            rsa.ImportParameters(parms);
+            using var rsa = RSA.Create(parms);
+            
             //ReadOnlySpan<byte> privateKey = Convert.FromBase64String(keyPair.PrivateKey).AsSpan();
             //var intRead = 0;
-            //rsa.ImportPkcs8PrivateKey(privateKey, out intRead);
-
-            // Sign the data, using SHA512 as the hashing algorithm 
-            //signedBytes = rsa.SignData(originalData, CryptoConfig.MapNameToOID("SHA512"));
-            signedBytes = rsa.SignData(originalData, SHA256.Create());
+            
+            signedBytes = rsa.SignData(originalData, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
         }
         catch (CryptographicException e)
         {
             Console.WriteLine(e.Message);
             throw;
         }
-        finally
-        {
-            // Set the keycontainer to be cleared when rsa is garbage collected.
-            rsa.PersistKeyInCsp = false;
-        }
+        
         //}
         // Convert the a base64 string before returning
         return Base64UrlEncoder.Encode(signedBytes);
@@ -93,18 +87,12 @@ public static class CryptoService
     {
         try
         {
-            RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider();
-
-            RSAalg.ImportParameters(Key);
-
-            // Hash and sign the data. Pass a new instance of SHA256
-            // to specify the hashing algorithm.
-            return RSAalg.SignData(DataToSign, SHA256.Create());
+            using var rsa = RSA.Create(Key);
+            return rsa.SignData(DataToSign, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
         }
         catch(CryptographicException e)
         {
             Console.WriteLine(e.Message);
-
             throw;
         }
     }
@@ -113,27 +101,23 @@ public static class CryptoService
     {
         try
         {
-            // Create a new instance of RSACryptoServiceProvider using the
-            // key from RSAParameters.
-            RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider();
-
-            RSAalg.ImportParameters(Key);
-
-            // Verify the data using the signature.  Pass a new instance of SHA256
-            // to specify the hashing algorithm.
-            return RSAalg.VerifyData(DataToVerify, SHA256.Create(), SignedData);
+            using var rsa = RSA.Create(Key);
+            return rsa.VerifyData(DataToVerify, SignedData, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
         }
         catch(CryptographicException e)
         {
             Console.WriteLine(e.Message);
-
             return false;
         }
     }
 
+    public static void TestRSA()
+    {
+        RSA.Create();
+    }
     public static CryptoKeyPair CreateKey()
     {
-        using var rsa = new RSACryptoServiceProvider(2048);
+        using var rsa = RSA.Create(keySizeInBits: 3072);
 
         Console.WriteLine("Created key");
         //var privateKey = rsa.ExportPkcs8PrivateKey();
@@ -148,13 +132,18 @@ public static class CryptoService
         {
             KeyId = "key1"
         };
+        
         var privateJwk = JsonWebKeyConverter.ConvertFromSecurityKey(privateKey);
+        privateJwk.Alg = SecurityAlgorithms.RsaSha256;
+        privateJwk.Use = "sig";
 
         RsaSecurityKey publicKey = new(rsa.ExportParameters(false))
         {
             KeyId = "key1"
         };
         var publicJwk = JsonWebKeyConverter.ConvertFromSecurityKey(publicKey);
+        publicJwk.Alg = SecurityAlgorithms.RsaSsaPssSha256;
+        publicJwk.Use = "sig";
 
         return new CryptoKeyPair(privateJwk, publicJwk);
     }

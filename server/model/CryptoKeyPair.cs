@@ -7,7 +7,6 @@ public record CryptoKeyPair
     public CryptoKeyPair()
     {
     }
-
     public CryptoKeyPair(JsonWebKey privateKey, JsonWebKey publicKey)
     {
         PrivateKey = privateKey;

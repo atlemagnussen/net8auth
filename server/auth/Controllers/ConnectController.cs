@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using net8auth.model;
 using System.Security.Cryptography;
+using Microsoft.Extensions.Options;
 
 namespace net8auth.auth.Controllers;
 
@@ -12,10 +13,16 @@ namespace net8auth.auth.Controllers;
 public class ConnectController : ControllerBase
 {
     private readonly IConfiguration _configuration;
+    private readonly CryptoKeyPair _keyPair;
 
-    public ConnectController(IConfiguration configuration)
+    public ConnectController(IConfiguration configuration,
+        IOptions<CryptoKeyPair> cryptoKeyOptions)
     {
         _configuration = configuration;
+        if (cryptoKeyOptions == null)
+            throw new ApplicationException("Missing crypto key pair");
+        
+        _keyPair = cryptoKeyOptions.Value;
     }
 
     [HttpGet("authorize")]
@@ -28,15 +35,13 @@ public class ConnectController : ControllerBase
             { "role", "Admin" }
         };
         
-        CryptoKeyPair keyPair = new CryptoKeyPair();
-        var sectionKey = _configuration.GetSection("CryptoKey");
-        sectionKey.Bind(keyPair);
-        
+        if (_keyPair.PrivateKey == null)
+            throw new ApplicationException("missing private key");
         
         // SecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("hello_world_whathello_world_whathello_world_whathello_world_what"));
         // var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-        var key = CryptoService.GetSecurityKeyFromJwk(keyPair.PrivateKey!, true);
+        var key = CryptoService.GetSecurityKeyFromJwk(_keyPair.PrivateKey, true);
         
         var handler = new JsonWebTokenHandler();
         var desc = new SecurityTokenDescriptor
@@ -45,7 +50,7 @@ public class ConnectController : ControllerBase
             Issuer = "test",
             Claims = claims,
             Expires = DateTime.UtcNow.AddDays(-1),
-            SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.RsaSha256)
+            SigningCredentials = new SigningCredentials(key, _keyPair.PrivateKey.Alg) // should be of SecurityAlgorithms.RsaSha256
         };
 
         var jwt = handler.CreateToken(desc);

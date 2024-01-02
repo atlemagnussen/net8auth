@@ -13,7 +13,7 @@ namespace net8auth.auth
             services.AddTransient<WellKnownService>();
             services.AddTransient<UsersService>();
         }
-        
+
         public static void AddAuthenticationServer(this IServiceCollection services, ConfigurationManager configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
