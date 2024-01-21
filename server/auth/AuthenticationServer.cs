@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 using net8auth.auth.Data;
 using net8auth.auth.Services;
 using net8auth.model;
@@ -68,6 +71,39 @@ namespace net8auth.auth
                 options.LoginPath = "/Identity/Account/Login";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
+            });
+
+            var authBuilder = services.AddAuthentication();
+
+            authBuilder.AddOpenIdConnect("AzureAd", "Azure Active Directory", options =>
+            {
+                options.SignInScheme = "idsrv.external";
+                options.SignOutScheme = "idsrv";
+
+                options.Authority = $"https://login.microsoftonline.com/common/v2.0/";
+                options.ClientId = "ffc92b44-2f67-45ab-a112-3e20ff6dcf78";
+                options.ResponseType = "id_token";
+
+                options.CallbackPath = "/signin-aad";
+                options.SignedOutCallbackPath = "/signout-callback-aad";
+                options.RemoteSignOutPath = "/signout-aad";
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = "name",
+                    RoleClaimType = "role",
+                    ValidateIssuer = false
+                };
+                options.Events.OnRedirectToIdentityProvider = context =>
+                {
+                    Console.WriteLine(context.ToString());
+
+                    return Task.FromResult(0);
+                };
+                options.Events.OnRemoteFailure = context =>
+                {
+                    Console.WriteLine(context.Failure.Message);
+                    return Task.FromResult(0);
+                };
             });
 
         }
