@@ -6,14 +6,15 @@ namespace net8auth.model;
 
 public static class ServiceExtensions
 {
-    public static void AddOptionsConfiguration(this IServiceCollection services, IConfiguration configuration)
-    {
-        var sectionCryptoKey = configuration.GetSection("CryptoKey");
-        services.Configure<CryptoKeyPair>(sectionCryptoKey);
-    }
+    // public static void AddOptionsConfiguration(this IServiceCollection services, IConfiguration configuration)
+    // {
+    //     var sectionCryptoKey = configuration.GetSection("CryptoKeys");
+    //     services.Configure<CryptoKeysConfig>(sectionCryptoKey);
+    // }
 
     public static void AddAuthenticationServices(this IServiceCollection services)
     {
         services.AddTransient<ITokenService, TokenService>();
+        services.AddSingleton<GetCryptoKeys>();
     }
 }

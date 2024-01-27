@@ -13,14 +13,14 @@ public static class CryptoService
     /// <param name="keyPair">Must be private key</param>
     /// <returns></returns>
     /// <exception cref="ApplicationException"></exception>
-    public static string? SignJwk(string jwt, CryptoKeyPair keyPair)
+    public static string? SignJwk(string jwt, CryptoKeys keys)
     {
         // The array to store the signed message in bytes
         byte[] signedBytes;
         
         
         // hash = hasher.ComputeHash(Encoding.UTF8.GetBytes(plaintext));
-        if (keyPair.PrivateKey == null) 
+        if (keys.Active == null) 
             throw new ApplicationException("missing private key");
         
         // Write the message to a byte array using UTF8 as the encoding.
@@ -29,7 +29,7 @@ public static class CryptoService
 
         try
         {
-            var parms = ConvertFromJwk(keyPair.PrivateKey);
+            var parms = ConvertFromJwk(keys.Active);
             using var rsa = RSA.Create(parms);
             
             //ReadOnlySpan<byte> privateKey = Convert.FromBase64String(keyPair.PrivateKey).AsSpan();
@@ -116,11 +116,11 @@ public static class CryptoService
     {
         RSA.Create();
     }
-    public static CryptoKeyPair CreateRsaKey()
-    {
-        using var rsa = RSA.Create(keySizeInBits: 3072);
+    //public static CryptoKeyPair CreateRsaKey()
+    //{
+        //using var rsa = RSA.Create(keySizeInBits: 3072);
 
-        Console.WriteLine("Created key");
+        //Console.WriteLine("Created key");
         //var privateKey = rsa.ExportPkcs8PrivateKey();
         //var privateKeyUtf8 = Encoding.UTF8.GetString(privateKey);
         //var privateKeyBase64 = Convert.ToBase64String(privateKey);
@@ -129,25 +129,25 @@ public static class CryptoService
         //var publicKeyUtf8 = Encoding.UTF8.GetString(publicKey);
         //var publicKeyBase64 = Convert.ToBase64String(publicKey);
 
-        RsaSecurityKey privateKey = new RsaSecurityKey(rsa.ExportParameters(true))
-        {
-            KeyId = "key1"
-        };
+        //RsaSecurityKey privateKey = new RsaSecurityKey(rsa.ExportParameters(true))
+        // {
+        //     KeyId = "key1"
+        // };
         
-        var privateJwk = JsonWebKeyConverter.ConvertFromSecurityKey(privateKey);
-        privateJwk.Alg = SecurityAlgorithms.RsaSha256;
-        privateJwk.Use = "sig";
+        // var privateJwk = JsonWebKeyConverter.ConvertFromSecurityKey(privateKey);
+        // privateJwk.Alg = SecurityAlgorithms.RsaSha256;
+        // privateJwk.Use = "sig";
         
-        RsaSecurityKey publicKey = new(rsa.ExportParameters(false))
-        {
-            KeyId = "key1"
-        };
-        var publicJwk = JsonWebKeyConverter.ConvertFromSecurityKey(publicKey);
-        publicJwk.Alg = SecurityAlgorithms.RsaSsaPssSha256;
-        publicJwk.Use = "sig";
+        // RsaSecurityKey publicKey = new(rsa.ExportParameters(false))
+        // {
+        //     KeyId = "key1"
+        // };
+        // var publicJwk = JsonWebKeyConverter.ConvertFromSecurityKey(publicKey);
+        // publicJwk.Alg = SecurityAlgorithms.RsaSsaPssSha256;
+        // publicJwk.Use = "sig";
 
-        return new CryptoKeyPair(privateJwk, publicJwk);
-    }
+        // return new CryptoKeyPair(privateJwk, publicJwk);
+    //}
 
     public static JsonWebKey CreateEcKey()
     {

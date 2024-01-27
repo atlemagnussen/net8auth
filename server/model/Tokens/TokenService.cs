@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Options;
@@ -9,14 +10,15 @@ namespace net8auth.model.Tokens;
 
 public class TokenService : ITokenService
 {
-    private readonly CryptoKeyPair _keyPair;
+    private readonly CryptoKeys _keys;
     
-    public TokenService(IOptions<CryptoKeyPair> cryptoKeyOptions)
+    public TokenService(GetCryptoKeys getCryptoKeys)
     {
-        if (cryptoKeyOptions == null)
+        var keys = getCryptoKeys.FromConfig();
+        if (keys == null)
             throw new ApplicationException("Missing crypto key pair");
         
-        _keyPair = cryptoKeyOptions.Value;
+        _keys = keys;
     }
 
     public Task<string> CreateAndSignJwt(ClaimsPrincipal user)
@@ -28,14 +30,14 @@ public class TokenService : ITokenService
             { "role", "Admin" }
         };
         
-        if (_keyPair.PrivateKey == null)
+        if (_keys.Active == null)
             throw new ApplicationException("missing private key");
         
         // SecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("hello_world_whathello_world_whathello_world_whathello_world_what"));
         // var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-        var key = CryptoService.GetSecurityKeyFromJwk(_keyPair.PrivateKey, true);
-        var signingCred = new SigningCredentials(key, _keyPair.PrivateKey.Alg);
+        var key = CryptoService.GetSecurityKeyFromJwk(_keys.Active, true);
+        var signingCred = new SigningCredentials(key, _keys.Active.Alg);
 
         var handler = new JsonWebTokenHandler();
         var desc = new SecurityTokenDescriptor
