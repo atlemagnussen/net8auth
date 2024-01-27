@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
@@ -29,7 +30,7 @@ public static class CryptoService
 
         try
         {
-            var parms = ConvertFromJwk(keys.Active);
+            SecurityKey parms = ConvertFromJwk(keys.Active);
             using var rsa = RSA.Create(parms);
             
             //ReadOnlySpan<byte> privateKey = Convert.FromBase64String(keyPair.PrivateKey).AsSpan();
@@ -48,40 +49,75 @@ public static class CryptoService
         return Base64UrlEncoder.Encode(signedBytes);
     }
 
-    public static RSAParameters ConvertFromJwk(JsonWebKey jwk, bool isPrivate = false) {
-        RSAParameters rsaParameters = new RSAParameters
-        {
-            // PUBLIC KEY PARAMETERS
-            // n parameter - public modulus
-            Modulus = Base64UrlEncoder.DecodeBytes(jwk.N),
-            // e parameter - public exponent
-            Exponent = Base64UrlEncoder.DecodeBytes(jwk.E),
-            
-            // PRIVATE KEY PARAMETERS (optional)
-            // d parameter - the private exponent value for the RSA key 
-            D = Base64UrlEncoder.DecodeBytes(jwk.D),
-            // dp parameter - CRT exponent of the first factor
-            DP = Base64UrlEncoder.DecodeBytes(jwk.DP),
-            // dq parameter - CRT exponent of the second factor
-            DQ = Base64UrlEncoder.DecodeBytes(jwk.DQ),
-            // p parameter - first prime factor
-            P = Base64UrlEncoder.DecodeBytes(jwk.P),
-            // q parameter - second prime factor
-            Q = Base64UrlEncoder.DecodeBytes(jwk.Q),
-            // qi parameter - CRT coefficient of the second factor
-            InverseQ = Base64UrlEncoder.DecodeBytes(jwk.QI)
-        };
-        return rsaParameters;
+    public static SecurityKey ConvertFromJwk(JsonWebKey jwk)
+    {
+        if (jwk.Kty == "EC")
+            return ConvertEcFromJwk(jwk);
+        else if (jwk.Kty == "RSA")
+            return GetSecurityRsaKeyFromJwk(jwk);
+        else
+            throw new ApplicationException($"not supported key type {jwk.Kty}");
     }
 
-    public static SecurityKey GetSecurityKeyFromJwk(JsonWebKey jwk, bool isPrivate)
+    public static SecurityKey ConvertEcFromJwk(JsonWebKey jwk)
     {
-        var parms = ConvertFromJwk(jwk, isPrivate);
-        var rsa = RSA.Create(parms);
+        var curve = jwk.Crv switch
+        {
+            "P-256" => ECCurve.NamedCurves.nistP256,
+            "P-384" => ECCurve.NamedCurves.nistP384,
+            "P-521" => ECCurve.NamedCurves.nistP521,
+            _ => throw new NotSupportedException()
+        };
+
+        var parms = new ECParameters
+        {
+            Curve = curve,
+            Q = new ECPoint
+            {
+                X = Base64UrlEncoder.DecodeBytes(jwk.X),
+                Y = Base64UrlEncoder.DecodeBytes(jwk.Y)
+            }
+        };
+        if (jwk.HasPrivateKey)
+            parms.D = Base64UrlEncoder.DecodeBytes(jwk.D);
         
-        SecurityKey key = new RsaSecurityKey(rsa);
-        key.KeyId = jwk.Kid;
+        using ECDsa key = ECDsa.Create();
+        var securityKey = new ECDsaSecurityKey(key)
+        {
+            KeyId = jwk.Kid
+        };
+        return securityKey;
+    }
+
+    public static SecurityKey GetSecurityRsaKeyFromJwk(JsonWebKey jwk)
+    {
+        var parms = ConvertRsaFromJwk(jwk);
+        var rsa = RSA.Create(parms);
+
+        SecurityKey key = new RsaSecurityKey(rsa)
+        {
+            KeyId = jwk.Kid
+        };
         return key;
+    }
+
+    public static RSAParameters ConvertRsaFromJwk(JsonWebKey jwk) {
+        RSAParameters parms = new RSAParameters
+        {
+            // PUBLIC KEY PARAMETERS
+            Modulus = Base64UrlEncoder.DecodeBytes(jwk.N),
+            Exponent = Base64UrlEncoder.DecodeBytes(jwk.E),
+        };
+        if (jwk.HasPrivateKey) {
+            // PRIVATE KEY PARAMETERS (optional)
+            parms.D = Base64UrlEncoder.DecodeBytes(jwk.D);
+            parms.DP = Base64UrlEncoder.DecodeBytes(jwk.DP);
+            parms.DQ = Base64UrlEncoder.DecodeBytes(jwk.DQ);
+            parms.P = Base64UrlEncoder.DecodeBytes(jwk.P);
+            parms.Q = Base64UrlEncoder.DecodeBytes(jwk.Q);
+            parms.InverseQ = Base64UrlEncoder.DecodeBytes(jwk.QI);
+        }
+        return parms;
     }
 
     public static byte[] HashAndSignBytes(byte[] DataToSign, RSAParameters Key)

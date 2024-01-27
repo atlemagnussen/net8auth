@@ -14,16 +14,27 @@ IConfiguration configuration = builder.GetConfigCmd(args);
 
 var services = new ServiceCollection();
 services.AddAuthenticationServices();
+services.AddOptionsConfiguration(configuration);
 services.AddSingleton(configuration);
 
 var sp = services.BuildServiceProvider();
 
-var getCryptoKeys = sp.GetService<GetCryptoKeys>()!;
-CryptoKeys keys = getCryptoKeys.FromConfig();
-Console.WriteLine(keys.ToString());
-//var jwtUnsigned = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhdGxlbWFnbnVzc2VuQGdtYWlsLmNvbSIsIm5hbWUiOiJhdGxlIiwicm9sZSI6IkFkbWluIiwiaXNzIjoidGVzdCIsImV4cCI6MTcwNDA5ODM5NywiaWF0IjoxNzA0MTg0Nzk3LCJuYmYiOjE3MDQxODQ3OTd9";
+// var getCryptoKeys = sp.GetService<GetCryptoKeys>()!;
+// CryptoKeys keys = getCryptoKeys.FromConfig();
+// Console.WriteLine(keys.ToString());
 
-//var signature = CryptoService.SignJwk(jwtUnsigned, keyPair);
+var cryptoKeyOptions = sp.GetService<IOptions<CryptoKeys>>();
+if (cryptoKeyOptions == null || cryptoKeyOptions.Value == null)
+{
+    Console.WriteLine("missing keys");
+    return;
+}
+
+CryptoKeys cryptoKeys = cryptoKeyOptions.Value;
+
+var jwtUnsigned = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhdGxlbWFnbnVzc2VuQGdtYWlsLmNvbSIsIm5hbWUiOiJhdGxlIiwicm9sZSI6IkFkbWluIiwiaXNzIjoidGVzdCIsImV4cCI6MTcwNDA5ODM5NywiaWF0IjoxNzA0MTg0Nzk3LCJuYmYiOjE3MDQxODQ3OTd9";
+
+var signature = CryptoService.SignJwk(jwtUnsigned, cryptoKeys);
 
 //Console.WriteLine($"{jwtUnsigned}.{signature}");
 
