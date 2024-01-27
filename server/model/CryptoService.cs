@@ -116,7 +116,7 @@ public static class CryptoService
     {
         RSA.Create();
     }
-    public static CryptoKeyPair CreateKey()
+    public static CryptoKeyPair CreateRsaKey()
     {
         using var rsa = RSA.Create(keySizeInBits: 3072);
 
@@ -129,7 +129,7 @@ public static class CryptoService
         //var publicKeyUtf8 = Encoding.UTF8.GetString(publicKey);
         //var publicKeyBase64 = Convert.ToBase64String(publicKey);
 
-        RsaSecurityKey privateKey = new(rsa.ExportParameters(true))
+        RsaSecurityKey privateKey = new RsaSecurityKey(rsa.ExportParameters(true))
         {
             KeyId = "key1"
         };
@@ -147,5 +147,19 @@ public static class CryptoService
         publicJwk.Use = "sig";
 
         return new CryptoKeyPair(privateJwk, publicJwk);
+    }
+
+    public static JsonWebKey CreateEcKey()
+    {
+        using ECDsa ecd = ECDsa.Create(ECCurve.NamedCurves.nistP384);
+
+        var privateKeyParams = ecd.ExportParameters(true);
+
+        
+
+        ECDsaSecurityKey privateKey = new ECDsaSecurityKey(ecd);
+        
+        var jwkPrivate = JsonWebKeyConverter.ConvertFromECDsaSecurityKey(privateKey);
+        return jwkPrivate;
     }
 }

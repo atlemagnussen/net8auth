@@ -19,16 +19,19 @@ services.AddOptionsConfiguration(configuration);
 
 var sp = services.BuildServiceProvider();
 
-var keyPairOptions = sp.GetService<IOptions<CryptoKeyPair>>();
-if (keyPairOptions == null)
-    return;
-var keyPair = keyPairOptions.Value;
+//var keyPairOptions = sp.GetService<IOptions<CryptoKeyPair>>();
+//if (keyPairOptions == null)
+//    return;
+//var keyPair = keyPairOptions.Value;
 
-var jwtUnsigned = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhdGxlbWFnbnVzc2VuQGdtYWlsLmNvbSIsIm5hbWUiOiJhdGxlIiwicm9sZSI6IkFkbWluIiwiaXNzIjoidGVzdCIsImV4cCI6MTcwNDA5ODM5NywiaWF0IjoxNzA0MTg0Nzk3LCJuYmYiOjE3MDQxODQ3OTd9";
+//var jwtUnsigned = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhdGxlbWFnbnVzc2VuQGdtYWlsLmNvbSIsIm5hbWUiOiJhdGxlIiwicm9sZSI6IkFkbWluIiwiaXNzIjoidGVzdCIsImV4cCI6MTcwNDA5ODM5NywiaWF0IjoxNzA0MTg0Nzk3LCJuYmYiOjE3MDQxODQ3OTd9";
 
-var signature = CryptoService.SignJwk(jwtUnsigned, keyPair);
+//var signature = CryptoService.SignJwk(jwtUnsigned, keyPair);
 
-Console.WriteLine($"{jwtUnsigned}.{signature}");
+//Console.WriteLine($"{jwtUnsigned}.{signature}");
+
+var testEcd = CryptoService.CreateEcKey();
+Console.WriteLine(testEcd);
 
 // CryptoKeyPair keyPairJwk = CryptoService.CreateKey();
 
