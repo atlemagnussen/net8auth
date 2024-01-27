@@ -19,6 +19,18 @@ public static class CryptoService
         return keyService.SignJwt(jwt);
     }
 
+    public static SecurityKey GetSecurityKeyFromJwk(JsonWebKey jwk)
+    {
+        IKeyService keyService = GetKeyService(jwk);
+        return keyService.GetSecurityKeyFromJwk();
+    }
+
+    public static bool Verify(string data, string signature, JsonWebKey jwk)
+    {
+        IKeyService keyService = GetKeyService(jwk);
+        return keyService.VerifySignedHash(data, signature);
+    }
+
     private static IKeyService GetKeyService(JsonWebKey jwk)
     {
         if (jwk.Kty == "EC")
@@ -27,13 +39,8 @@ public static class CryptoService
             return new RsaKeyService(jwk);
         
         throw new ApplicationException($"not supported key type {jwk.Kty}");
-        
     }
-    public static SecurityKey GetSecurityKeyFromJwk(JsonWebKey jwk)
-    {
-        IKeyService keyService = GetKeyService(jwk);
-        return keyService.GetSecurityKeyFromJwk();
-    }
+
     //public static CryptoKeyPair CreateRsaKey()
     //{
         //using var rsa = RSA.Create(keySizeInBits: 3072);

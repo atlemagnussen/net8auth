@@ -80,17 +80,15 @@ public class RsaKeyService : IKeyService
     //     }
     // }
 
-    // public static bool VerifySignedHash(byte[] DataToVerify, byte[] SignedData, RSAParameters Key)
-    // {
-    //     try
-    //     {
-    //         using var rsa = RSA.Create(Key);
-    //         return rsa.VerifyData(DataToVerify, SignedData, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-    //     }
-    //     catch(CryptographicException e)
-    //     {
-    //         Console.WriteLine(e.Message);
-    //         return false;
-    //     }
-    // }
+    public bool VerifySignedHash(string dataBase64, string signatureBase64)
+    {
+        var encoder = new UTF8Encoding();
+        byte[] data = encoder.GetBytes(dataBase64);
+        var signature = Base64UrlEncoder.DecodeBytes(signatureBase64);
+        return VerifySignedHash(data, signature);
+    }
+    private bool VerifySignedHash(byte[] data, byte[] signature)
+    {
+        return _rsaKey.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+    }
 }

@@ -34,9 +34,21 @@ CryptoKeys cryptoKeys = cryptoKeyOptions.Value;
 
 var jwtUnsigned = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhdGxlbWFnbnVzc2VuQGdtYWlsLmNvbSIsIm5hbWUiOiJhdGxlIiwicm9sZSI6IkFkbWluIiwiaXNzIjoidGVzdCIsImV4cCI6MTcwNDA5ODM5NywiaWF0IjoxNzA0MTg0Nzk3LCJuYmYiOjE3MDQxODQ3OTd9";
 
-var signature = CryptoService.SignJwk(jwtUnsigned, cryptoKeys.Active);
+string signature = CryptoService.SignJwk(jwtUnsigned, cryptoKeys.Active)!;
 
+Console.WriteLine("sig EC");
 Console.WriteLine(signature);
+
+// jwtUnsigned = $"{jwtUnsigned}append"; append to jwt to see it fail the verification
+var verified = CryptoService.Verify(jwtUnsigned, signature, cryptoKeys.Active);
+Console.WriteLine($"Verified = {verified}");
+
+string signature2 = CryptoService.SignJwk(jwtUnsigned, cryptoKeys.Others[0])!;
+Console.WriteLine("sig RSA");
+Console.WriteLine(signature2);
+
+var verified2 = CryptoService.Verify(jwtUnsigned, signature2, cryptoKeys.Others[0]);
+Console.WriteLine($"Verified = {verified}");
 
 //Console.WriteLine($"{jwtUnsigned}.{signature}");
 

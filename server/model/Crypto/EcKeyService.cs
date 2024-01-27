@@ -60,12 +60,16 @@ public class EcKeyService : IKeyService
         };
         return key;
     }
-    // public static SecurityKey ConvertEcFromJwk(JsonWebKey jwk)
-    // {   
-    //     var securityKey = new ECDsaSecurityKey(key)
-    //     {
-    //         KeyId = jwk.Kid
-    //     };
-    //     return securityKey;
-    // }
+
+    public bool VerifySignedHash(string dataBase64, string signatureBase64)
+    {
+        var encoder = new UTF8Encoding();
+        byte[] data = encoder.GetBytes(dataBase64);
+        var signature = Base64UrlEncoder.DecodeBytes(signatureBase64);
+        return VerifySignedHash(data, signature);
+    }
+    private bool VerifySignedHash(byte[] data, byte[] signature)
+    {
+        return _ecKey.VerifyData(data, signature, HashAlgorithmName.SHA256);
+    }
 }
