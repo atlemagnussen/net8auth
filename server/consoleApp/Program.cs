@@ -34,7 +34,9 @@ CryptoKeys cryptoKeys = cryptoKeyOptions.Value;
 
 var jwtUnsigned = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhdGxlbWFnbnVzc2VuQGdtYWlsLmNvbSIsIm5hbWUiOiJhdGxlIiwicm9sZSI6IkFkbWluIiwiaXNzIjoidGVzdCIsImV4cCI6MTcwNDA5ODM5NywiaWF0IjoxNzA0MTg0Nzk3LCJuYmYiOjE3MDQxODQ3OTd9";
 
-var signature = CryptoService.SignJwk(jwtUnsigned, cryptoKeys);
+var signature = CryptoService.SignJwk(jwtUnsigned, cryptoKeys.Active);
+
+Console.WriteLine(signature);
 
 //Console.WriteLine($"{jwtUnsigned}.{signature}");
 

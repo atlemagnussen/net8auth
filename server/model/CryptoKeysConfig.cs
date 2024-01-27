@@ -1,5 +1,4 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -12,14 +11,20 @@ public record CryptoKeysConfig
     public IEnumerable<JsonWebKey> Keys { get; init; } = [];
 }
 
-public record CryptoKeys {
+public record CryptoKeys
+{
+    public CryptoKeys()
+    {
+        Active = new JsonWebKey();
+        Others = new List<JsonWebKey>();
+    }
     public CryptoKeys(JsonWebKey active, List<JsonWebKey> others)
     {
         Active = active;
         Others = others;
     }
-    public JsonWebKey Active { get; init; }
-    public List<JsonWebKey> Others { get; init; }
+    public JsonWebKey Active { get; set; }
+    public List<JsonWebKey> Others { get; set; }
 
     public override string ToString()
     {

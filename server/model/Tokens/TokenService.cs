@@ -36,7 +36,7 @@ public class TokenService : ITokenService
         // SecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("hello_world_whathello_world_whathello_world_whathello_world_what"));
         // var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-        var key = CryptoService.GetSecurityKeyFromJwk(_keys.Active, true);
+        var key = CryptoService.GetSecurityKeyFromJwk(_keys.Active);
         var signingCred = new SigningCredentials(key, _keys.Active.Alg);
 
         var handler = new JsonWebTokenHandler();

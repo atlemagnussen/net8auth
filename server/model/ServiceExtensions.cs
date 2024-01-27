@@ -8,15 +8,17 @@ public static class ServiceExtensions
 {
     public static void AddOptionsConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        var section = configuration.GetSection("CryptoKeys");
-        CryptoKeysConfig config = new();
-        section.Bind(config);
-
-        var keys = config.Keys.ToList();
-        var active = keys.Find(k => k.Kid == config.ActiveKey) ?? throw new ApplicationException($"no active key found by name {config.ActiveKey}");
-        keys.Remove(active);
-        CryptoKeys cryptoKeys = new CryptoKeys(active, keys);
-        services.Configure<CryptoKeys>(cryptoKeys);
+        // CryptoKeys cryptoKeys = new CryptoKeys(active, keys);
+        services.Configure<CryptoKeys>(ck => {
+            var section = configuration.GetSection("CryptoKeys");
+            CryptoKeysConfig config = new();
+            section.Bind(config);
+            var keys = config.Keys.ToList();
+            var active = keys.Find(k => k.Kid == config.ActiveKey) ?? throw new ApplicationException($"no active key found by name {config.ActiveKey}");
+            keys.Remove(active);
+            ck.Active = active;
+            ck.Others = keys;
+        });
     }
 
     
