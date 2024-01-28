@@ -16,7 +16,6 @@ public class RsaKeyService : IKeyService
         _rsaKey = RSA.Create(parms);
     }
 
-
     public string SignJwt(string jwt)
     {
         try
@@ -34,7 +33,7 @@ public class RsaKeyService : IKeyService
 
     private string SignJwt(byte[] jwtBytes)
     {
-        var signedBytes = _rsaKey.SignData(jwtBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
+        var signedBytes = _rsaKey.SignData(jwtBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
         return Base64UrlEncoder.Encode(signedBytes);
     }
 
