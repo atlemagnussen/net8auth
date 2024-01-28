@@ -56,7 +56,7 @@ public class EcKeyService : IKeyService
     {
         SecurityKey key = new ECDsaSecurityKey(_ecKey)
         {
-            KeyId = _ecJwk.Kid
+            KeyId = _ecJwk.Kid,
         };
         return key;
     }

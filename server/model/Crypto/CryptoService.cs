@@ -73,16 +73,4 @@ public static class CryptoService
 
         // return new CryptoKeyPair(privateJwk, publicJwk);
     //}
-
-    // public static JsonWebKey CreateEcKey()
-    // {
-    //     using ECDsa ecd = ECDsa.Create(ECCurve.NamedCurves.nistP384);
-
-    //     var privateKeyParams = ecd.ExportParameters(true);
-
-    //     ECDsaSecurityKey privateKey = new ECDsaSecurityKey(ecd);
-        
-    //     var jwkPrivate = JsonWebKeyConverter.ConvertFromECDsaSecurityKey(privateKey);
-    //     return jwkPrivate;
-    // }
 }

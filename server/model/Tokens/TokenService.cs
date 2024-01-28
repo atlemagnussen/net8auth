@@ -12,9 +12,9 @@ public class TokenService : ITokenService
 {
     private readonly CryptoKeys _keys;
     
-    public TokenService(GetCryptoKeys getCryptoKeys)
+    public TokenService(IOptions<CryptoKeys> options)
     {
-        var keys = getCryptoKeys.FromConfig();
+        var keys = options.Value;
         if (keys == null)
             throw new ApplicationException("Missing crypto key pair");
         
