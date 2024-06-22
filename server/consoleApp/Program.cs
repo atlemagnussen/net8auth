@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using net8auth.consoleApp;
 using net8auth.model;
+using net8auth.model.Test;
 using net8auth.model.Tokens;
 
 Console.WriteLine("Hello, World!");
@@ -26,12 +27,11 @@ var sp = services.BuildServiceProvider();
 // CryptoKeys keys = getCryptoKeys.FromConfig();
 // Console.WriteLine(keys.ToString());
 
-var tokenService = sp.GetService<ITokenService>()!;
-var jwt = await tokenService.CreateAndSignJwt(new ClaimsPrincipal());
-Console.WriteLine("jwt");
-Console.WriteLine(jwt);
+// var tokenService = sp.GetService<ITokenService>()!;
+// var jwt = await tokenService.CreateAndSignJwt(new ClaimsPrincipal());
+// Console.WriteLine("jwt");
+// Console.WriteLine(jwt);
 
-// var key = CryptoService.CreateEcKey();
-// var keyStr = JsonSerializer.Serialize(key);
-
-// Console.WriteLine(keyStr);
+var key = CreateKeys.CreateEcKey();
+var keyStr = JsonSerializer.Serialize(key);
+Console.WriteLine(keyStr);
